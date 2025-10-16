@@ -3,7 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Author extends Model
+class Genre extends Model
 {
-    protected $fillable = ['name', 'country'];
+    protected $fillable = ['name'];
 }
