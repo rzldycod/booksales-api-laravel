@@ -63,4 +63,27 @@ class BookController extends Controller
             'data' => $book
         ], 201);
     } 
+
+    public function show(string $id)
+    {
+        $book = Book::find($id);
+
+        if (!$book) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Get detail resource',
+            'data' => $book
+        ]);
+    }
+
+    public function destroy(string $id) {
+        
+    }
+
 }
