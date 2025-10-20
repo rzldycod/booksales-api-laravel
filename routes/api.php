@@ -2,14 +2,25 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\GenreController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\GenreController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+/*
+| API Routes
+*/
 
-Route::apiResource('authors', AuthorController::class);
-Route::apiResource('genres', GenreController::class);
-Route::apiResource('books', BookController::class);
+// Routes Authentication
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
+
+//Routes agar semua orang bisa akses
+Route::apiResource('authors', AuthorController::class)->only(['index', 'show']);
+Route::apiResource('genres', GenreController::class)->only(['index', 'show']);
+
+//Routes untuk admin yg bisa mengakses
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    Route::apiResource('authors', AuthorController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('genres', GenreController::class)->only(['store', 'update', 'destroy']);
+});
