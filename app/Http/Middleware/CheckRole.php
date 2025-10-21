@@ -19,7 +19,7 @@ class CheckRole
         try {
             $user = JWTAuth::parseToken()->authenticate();
 
-            if (in_array($user->role, $roles)) {
+            if (!in_array($user->role, $roles)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Unauthorized access'
